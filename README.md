@@ -1,5 +1,5 @@
 # 장지원 [201640133]
-2주차 [21.09.08 - 리액트로 클론 코딩 시작하기]()
+2주차 [21.09.08 - 리액트로 클론 코딩 시작하기](https://github.com/charade6/movie_app_2021/blob/master/README.md#-09%EC%9B%94-08%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
 
@@ -25,7 +25,7 @@
 *install중 warning이 발생하지만 상관없음*
 ### 리액트 앱 실행하기, 종료하기
 >터미널에서 `npm start`로 앱 실행<br/>
-Ctrl + c를 누르면 앱 종료
+`Ctrl` + `c`를 누르면 앱 종료
 
 ### 리액트 앱 동작 원리
 
