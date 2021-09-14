@@ -29,7 +29,7 @@
 
 ### 리액트 앱 동작 원리
 
-![동작 원리](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/3dbaab6f-c406-440e-9b01-4a23ad4f9f9f/%EC%BA%A1%EC%B2%98.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210909%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210909T173051Z&X-Amz-Expires=86400&X-Amz-Signature=a3bd12cde88bf20279fccaf8033928e5c4e1bba96cb2541b32b6def8c7919a8a&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22%25EC%25BA%25A1%25EC%25B2%2598.PNG.png%22)
+![동작 원리](https://postfiles.pstatic.net/MjAyMTA5MTRfMTM0/MDAxNjMxNTgxNjkzMzQ0.NZ2APinpposV1VWY_oO_5IJjfend4SXFGAreXPqe1fgg.IFVCV4_LBYKC0Mt-QTagxsQ5lTvJZim1-8vwZ5NAowQg.PNG.charade6/%EC%BA%A1%EC%B2%98.PNG?type=w773)
 
 >리액트는 index.js에 있는 `ReactDOM.render()`를 통해<br/>
 App.js에 있는`<div>Hello React</div>`를 index.html에 삽입해줌
