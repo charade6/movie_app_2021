@@ -9,7 +9,7 @@
     컴포넌트 정의
 </details>
 
-3주차 [21.09.15 - 리액트 기초개념, 효율적 컴포넌트 생성](#)
+3주차 [21.09.15 - 리액트 기초개념, 효율적 컴포넌트 생성](https://github.com/charade6/movie_app_2021#-09%EC%9B%94-15%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
     
@@ -21,7 +21,7 @@
 
 ## [ 09월 15일 ]
 ### 컴포넌트와 JSX
-**==컴포넌트==는 자바스크립트와 HTML을 조합한 ==JSX==라는 문법을 사용해서 만든다**<br><br>
+**컴포넌트는 자바스크립트와 HTML을 조합한 JSX라는 문법을 사용해서 만든다**<br><br>
 
 * Potato.js추가하여 Potato 컴포넌트 정의
 
@@ -46,7 +46,7 @@ import Potato from './Potato'
 ReactDOM.render(<App /><Potato />, document.getElementById('root'))
 ```
 >😥**오류발생**💧<br>
-❓리액트는 최종적으로 ==단 한개의 컴포넌트만== 그릴수 있음<br>
+❓리액트는 최종적으로 단 ***한개의 컴포넌트만*** 그릴수 있음<br>
 🛠 App컴포넌트 안에 Potato컴포넌트를 넣어주자
 
 `App.js`
@@ -122,7 +122,7 @@ export default App
 
 * props로 컴포넌트에 데이터 전달하기
   - props에는 불리언 값(true, false), 숫자, 배열과 같은 다양한 형태의 데이터를 사용할 수 있음
-  - props의 전달 데이터는 문자열인 경우를 제외하면 모두 ==중괄호==로 감싸야 함
+  - props의 전달 데이터는 문자열인 경우를 제외하면 모두 ***중괄호***로 감싸야 함
 
 `App.js`
 ```jsx
@@ -157,7 +157,7 @@ function Food(props) {
 
 <br>
 
-* ==구조 분해 할당으로 props 사용하기==
+* 구조 분해 할당으로 props 사용하기
 
 `App.js`
 ```jsx
@@ -218,7 +218,7 @@ const foodILike = [
   }
 ]
 ```
->서버에서 넘어온 데이터를 저장할 수 있도록 foodILike라는 변수를 만든 다음 배열을 할당한 후 데이터입력
+>서버에서 넘어온 데이터를 저장할 수 있도록 foodILike라는 변수를 만든 다음 배열을 할당
 
 <br>
 
@@ -294,7 +294,7 @@ export default App
 ```
 
 >코드가 길어지면 메인만 보고 함수가 어떤 역할을 하는지 몰라 함수를 거쳐가야 하므로 가독성↓<br>
->함수보다는 ==컴퍼넌트로 만들어사용하는것이 일반적==
+>함수보다는 ***컴퍼넌트로 만들어사용하는것이 일반적***
 
 <br>
 
