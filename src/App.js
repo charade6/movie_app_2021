@@ -4,14 +4,14 @@ function App() {
   return (
     <div>
       <h1>Hello</h1>
-      <Food fav="kimchi" something={true} papapa={['hello', 1, 2, true]} />
+      <Food fav="kimchi" />
     </div>
   );
 }
 
 function Food(foo) {
-  console.log(foo)
-  return <h1>I like potato</h1>
+  const {fav} = foo
+  return <h1>I like {fav}</h1>
 }
 
 export default App;
