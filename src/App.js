@@ -5,12 +5,14 @@ function App() {
     <div>
       <h1>Hello</h1>
       <Food fav="kimchi" />
+      <Food fav="ramen" />
+      <Food fav="samgiopsal" />
+      <Food fav="chukumi" />
     </div>
   );
 }
 
-function Food(foo) {
-  const {fav} = foo
+function Food({fav}) {
   return <h1>I like {fav}</h1>
 }
 
