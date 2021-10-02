@@ -1,5 +1,5 @@
 # 장지원 [201640133]
-2주차 [21.09.08 - 리액트로 클론 코딩 시작하기](https://github.com/charade6/movie_app_2021/blob/master/README.md#-09%EC%9B%94-08%EC%9D%BC-)
+2주차 [21.09.08 - 리액트로 클론 코딩 시작하기](https://github.com/charade6/movie_app_2021#-09%EC%9B%94-08%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
 
@@ -17,7 +17,174 @@
     props
     map() 함수
 </details>
+
+5주차 [21.09.29 - prop-types적용, state와 클래스형 컴포넌트](https://github.com/charade6/movie_app_2021#-09%EC%9B%94-29%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    prop-types
+    state
+    생명 주기 함수
+</details>
 <br><br>
+
+## [ 09월 29일 ]
+### **prop-types**
+전달받은 props의 데이터타입 검사<br><br>
+
+* prop-types 설치하기
+
+>외부모듈이므로 터미널에서  `npm install prop-types` 입력하여 설치
+
+* prop-types 적용하기
+
+`App.js`
+
+```jsx
+import PropTypes from 'prop-types' //맨윗줄 추가
+
+Food.propTypes = {
+  name: PropTypes.string.isRequired,    // name에 string이라는 자료형이 반드시 필요하다
+  picture: PropTypes.string.isRequired,
+  rating: PropTypes.string.isRequired
+}
+```
+![5주1](https://postfiles.pstatic.net/MjAyMTEwMDJfMjg3/MDAxNjMzMTc0MzIyNDg1.C5c3_cA-E5XOUNyue08UkB8cNkUcLXJycWYENpwZl1kg.nvfhBeAIoVlA8PD7ggirY9mGTPmobzscjLeW_UfvmlMg.PNG.charade6/01.PNG?type=w773)
+
+> 😥**오류발생**💧<br>
+❓ rating은 데이터타입이 string이 아니므로 오류발생<br>
+🛠 데이터타입을 number로 바꿔주자
+
+```jsx
+Food.propTypes = {
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  rating: PropTypes.number      // 필수x 값이 전달될때는 자료형이 number이여야함
+}
+```
+
+* [prop-types의 다양한 사용방법(공식문서)](https://github.com/facebook/prop-types)
+
+### **state**
+
+>정적인 데이터 - props 사용<br>
+동적인 데이터 - state 사용<br>
+***state는 함수형 컴퍼넌트가 아닌 class형 컴포넌트에서 사용***
+
+* class형 컴포넌트 작성
+
+`App.js`
+
+```jsx
+import React from 'react'
+// 또는 import {Component} from 'react'
+
+class App extends React.Component {
+// class App extends Component {
+    render() {      // class형 컴포넌트에서는 바로 retern을 사용할수없으므로 render()함수 사용
+        return (
+            <h1>Hello</h1>
+        )
+    }
+}
+
+export default App
+```
+![5주2](https://postfiles.pstatic.net/MjAyMTEwMDJfMjQy/MDAxNjMzMTc0MzIyNDg4.FkizCncZaDmxHWFqUuhZd41QbF-qvp_gz27wDdPwwksg.SIN168jFupITcSQRngPI5razERG9_padzeOoRrXpIocg.PNG.charade6/02.PNG?type=w773)
+
+<br>
+
+* state 정의
+
+`App.js`
+```jsx
+class App extends Component {
+    state = {               // state 정의
+        count: 0
+    }
+    render() {
+        return (
+            <h1>The number is: {this.state.count} </h1>
+        )
+    }
+}
+```
+![5주3](https://postfiles.pstatic.net/MjAyMTEwMDJfMjU1/MDAxNjMzMTc0MzIyNDkz.qCdPM7pVBUqU5laA6415ZcOGIxfSJgN_rgJsrfC0iYEg.cP1q7tBpR4ICZGTTl-pEzTV_4BFNiGLQcIl8bMXzXVQg.PNG.charade6/03.PNG?type=w773)
+
+<br>
+
+* 버튼으로 count state값 변경하기
+
+`App.js`
+```jsx
+class App extends Component {
+    state = {
+        count: 0
+    }
+
+    add = () => {
+        this.setState({count: this.state.count + 1})
+    }
+
+    minus = () => {
+        this.setState({count: this.state.count - 1})
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>The number is: {this.state.count} </h1>
+                <button onClick={this.add}>Add</button>
+                <button onClick={this.minus}>Minus</button>
+            </div>
+        )
+    }
+}
+```
+![5주4](https://postfiles.pstatic.net/MjAyMTEwMDJfMjQ0/MDAxNjMzMTc0MzIyNDk3.jwTMAlkzNG6t1bZiPNSkBFPoHTcTLnTMfg1FJ6TiL40g.EtLoU_T_dQhqdu3XzfUBgyCyKx5ZO2J0SQC8im5nroIg.PNG.charade6/04.PNG?type=w773)
+
+<br>
+
+* 생명주기함수
+
+![생명주기함수](https://blog.kakaocdn.net/dn/cdh3Mf/btqDk6pKMMV/O5rGQb2CLmSRPfEqtYn1d0/img.png)<br>
+> 컴포넌트는 생성 => 업데이트 => 제거의 생명주기를 가지고있음
+
+<br>
+
+1. conponentDidMount()
+```jsx
+componentDidMount(){
+    console.log('componentDidMount')
+}
+```
+![5주5](https://postfiles.pstatic.net/MjAyMTEwMDJfMTIx/MDAxNjMzMTc0MzIyNTI0.OJGNH5YYXhPpmkDOzL0t4VWk6yY-WCqI5eEFNrHSZ_og.NtiwWtculvGrwGnje5HDs1TAe-vpuhrmkEII8Ss1AWYg.PNG.charade6/05.PNG?type=w773)
+>컴포넌트가 마운트 된 직후에 호출
+
+<br>
+
+2. conponentDidUpdate()
+```jsx
+componentDidUpdate(){
+    console.log('componentDidUpdate')
+}
+```
+![5주6](https://postfiles.pstatic.net/MjAyMTEwMDJfNDkg/MDAxNjMzMTc0MzIyNTU1.0b6KXCh76GjRHktbkuI4RLpFktEbWAvBXu7ujaiCz7sg.Io_jBUkh_5Lwr4F-UFXlkwx92TKjfu_2UHFxFPENl-sg.PNG.charade6/06.PNG?type=w773)
+>갱신(렌더)이 일어난 직후 호출되며, 최초 렌더링에서는 호출되지않음
+
+<br>
+
+3. conponentWillUnmount()
+```jsx
+componentWillUnmount(){
+    console.log('componentWillUnmount')
+}
+```
+> 이 함수는 컴포넌트가 화면에서 떠날 때 실행되므로 직접확인하기 어려움
+
+<br>
+
+***
 
 ## [ 09월 15일 ]
 ### 컴포넌트와 JSX
