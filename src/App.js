@@ -2,7 +2,8 @@ import { Component } from "react";
 
 class App extends Component {
     state = {
-        isLoading: true
+        isLoading: true,
+        movies: []
     }
 
     componentDidMount(){
