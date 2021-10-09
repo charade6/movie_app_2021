@@ -1,38 +1,20 @@
-import {Component} from 'react'
+import { Component } from "react";
 
 class App extends Component {
-    constructor(props){
-        super(props)
-        console.log('constructor')
-    }
-    componentDidMount(){
-        console.log('componentDidMount')
-    }
-    componentDidUpdate(){
-        console.log('componentDidUpdate')
-    }
-    componentWillUnmount(){
-        console.log('componentWillUnmount')
-    }
     state = {
-        count: 0
+        isLoading: true
     }
 
-    add = () => {
-        this.setState({count: this.state.count + 1})
+    componentDidMount(){
+        setTimeout(() => {
+            this.setState({isLoading: false})
+        }, 6000);
     }
-
-    minus = () => {
-        this.setState({count: this.state.count - 1})
-    }
-
-    render() {
-        console.log('render')
-        return (
+    render(){
+        const {isLoading} = this.state
+        return(
             <div>
-                <h1>The number is: {this.state.count} </h1>
-                <button onClick={this.add}>Add</button>
-                <button onClick={this.minus}>Minus</button>
+                {isLoading ? <img src="img/loading.gif" alt="loading"/> : '영화 데이터 출력'}
             </div>
         )
     }
