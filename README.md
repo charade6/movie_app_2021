@@ -23,11 +23,132 @@
     <div markdown="1">
     
     prop-types
+    클래스형 컴포넌트
     state
     생명 주기 함수
 </details>
+
+6주차 [21.10.06 - 영화 앱 만들기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-06%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    로딩 만들기
+    영화 API 호출하기
+    async, await
+</details>
 <br><br>
 
+## [ 10월 06일 ]
+### 영화 앱 만들기
+* 영화 데이터 로딩상태 표시하기
+
+`APP.js`
+```jsx
+import { Component } from "react"  // 클래스형 컴포넌트로 작성
+
+class App extends Component {
+    state = {
+        isLoading: true,     // state 정의
+        movies: []
+    }
+
+    componentDidMount(){
+        setTimeout(() => {
+            this.setState({isLoading: false})
+        }, 6000);       // 6초 이후 isLoading의 값을 false로 변경
+    }
+    render(){
+        const {isLoading} = this.state  // 구조분해할당으로 this.state에 있는 isLoading을 상수로 선언
+        return(
+            <div>
+                {isLoading ? <img src="img/loading.gif" alt="loading"/> : '영화 데이터 출력'}
+            </div>              // 삼항연산자 사용하여 isLoading이 true면 로딩 출력
+        )
+    }
+}
+
+export default App
+```
+![1](https://postfiles.pstatic.net/MjAyMTEwMDlfMjAw/MDAxNjMzNzgwODMxMDM2.r9NixJLvoid6u1krlwTaX9XSc4l9d_-J83hAZIe0di4g.RS6sR39sEGWmg1kdML5zWAkl9eE0uTE3dhlvGvVjNs0g.PNG.charade6/1.PNG?type=w773)
+<br>
+
+>❓ componentDidMount를 쓰는 이유?<br>
+💡 초기 렌더링이 state 값을 읽어서 로딩을 출력하는것이기 때문에 초기렌더링 이후 실행하는 라이프사이클 함수인 componentDidMount()를 사용함 
+
+<br>
+
+* 영화 API 사용준비
+
+axios : API연동모듈
+[더알아보기](https://velog.io/@shin6403/React-axios%EB%9E%80-feat.-Fetch-API)
+> 외부모듈이므로 터미널에서 `npm install axios` 입력하여 설치
+
+<br>
+
+* 영화API를 영화 앱에서 호출하기
+
+axios.get()함수의 인자로 URL을 전달하여 API호출
+
+`APP.js`
+```jsx
+import {Component} from 'react'
+import axios from "axios"   // axios를 임포트함
+
+~ 중략
+
+    getMoives = () => {
+        const movies = axios.get('https://yts-proxy.now.sh/list_movies.json')       // API를 호출하여 movies에 저장
+        console.log(movies);
+    }
+    componentDidMount(){
+        this.getMoives()
+    }
+
+~후략
+```
+![2](https://postfiles.pstatic.net/MjAyMTEwMDlfNzQg/MDAxNjMzNzgwODQwMjky.TjMj715YXLSquFhSgBaCbrg3ENqdUVCxGir7xCT_rlEg.B-0dBrH6RPde8hbFhy7Ne9FdzPPo0sAeCJyg6Mh51J4g.PNG.charade6/2.PNG?type=w773)
+<br>
+
+![3](https://postfiles.pstatic.net/MjAyMTEwMDlfNDkg/MDAxNjMzNzgwODQwMjUw.XNKdiVCoaInNvXJB5o4OOnwLLXgacIBuBVrwuoH2w-gg.7mfiCD8ZsvScr2KZ6HeQCtV-jgEYvuo2TYWmlNRmCvIg.PNG.charade6/3.PNG?type=w773)
+
+> 🤔 네트워크에는 axios가 API를 호출했지만 콘솔에서는 axios.get()함수로 데이터를 못잡음
+* getMovies()에 async 붙이고, axios.get에 await 붙이기
+
+axios.get()함수사용시 시간이필요함<br>
+비동기함수인 async와 await사용하여 비동기식 처리하여 
+axios.get()함수가 실행된이후 다음작업을 실행함<br>
+[async, await 더알아보기](https://developer.mozilla.org/ko/docs/Learn/JavaScript/Asynchronous/Async_await)
+
+`App.js`
+```jsx
+getMoives = async () => {
+        const movies = await axios.get('https://yts-proxy.now.sh/list_movies.json')
+        console.log(movies);
+    }
+```
+<br>
+
+![4](https://postfiles.pstatic.net/MjAyMTEwMDlfMTE4/MDAxNjMzNzgwODQwMzEw.9XJO9rRL1KFV4GusyLPylagImfwN37BrpYIVe8uSTsUg.hleU2bAS-TGOT37WY8ytWINaFPuNZ8d67IHRvHSC5Lkg.PNG.charade6/4.PNG?type=w773)
+
+<br>
+
+* 구조분해할당을 이용하여 영화 데이터 저장하기
+
+```jsx
+getMoives = async () => {
+        const {
+            data: {
+                data: {movies}
+            }
+        } = await axios.get('https://yts-proxy.now.sh/list_movies.json')
+        this.setState({movies, isLoading: false})   // 호출한 API 데이터를 movies state에 저장하고 로딩을 끝냄
+    }
+```
+![5](https://postfiles.pstatic.net/MjAyMTEwMDlfMjA5/MDAxNjMzNzgwODQwMjg1.k6CBoYCg4aLOaXQ8pZeHuZe1RIR48Ab--HDRP6kk_scg.7cEFADzbbtsCHpeJE22RWZ4Dgf__8MVnMJZ5JopkYDwg.PNG.charade6/5.PNG?type=w773)
+
+<br>
+
+***
 ## [ 09월 29일 ]
 ### **prop-types**
 전달받은 props의 데이터타입 검사<br><br>
@@ -78,6 +199,7 @@ Food.propTypes = {
 ```jsx
 import React from 'react'
 // 또는 import {Component} from 'react'
+// import React, {Component} from 'react'
 
 class App extends React.Component {
 // class App extends Component {
