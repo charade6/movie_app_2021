@@ -1,13 +1,17 @@
 import Proptypes from 'prop-types'
 
-function Movie() {
+function Movie({id, title, year, summery, poster}) {
     return (
-        <h1>hello</h1>
+        <h4>{title}</h4>
     )
 }
 
-Movie.proptypes = {
-
+Movie.propTypes = {
+    id: Proptypes.number.isRequired,
+    year: Proptypes.number.isRequired,
+    title: Proptypes.string.isRequired,
+    summary: Proptypes.string.isRequired,
+    poster: Proptypes.string.isRequired
 }
 
 export default Movie
