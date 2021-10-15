@@ -22,22 +22,26 @@ class App extends Component {
     render(){
         const { isLoading, movies } = this.state
         return(
-            <div>
+            <section class="container">
                 { isLoading 
-                ? <img src="img/loading.gif" width="100px" height="100px" alt="loading"/> 
-                : movies.map((movie) => {
-                    return (
-                        <Movie 
-                            key = {movie.id}
-                            id = {movie.id}
-                            year = {movie.year}
-                            title = {movie.title}
-                            summary = {movie.summary}
-                            poster = {movie.poster}
-                        />
-                    )
-                }) }
-            </div>
+                ? (<div class="loader"><img src="img/loading.gif" alt="loading"/></div>)
+                : (<div class="movies">
+                    {
+                        movies.map((movie) => {
+                            return (
+                                <Movie 
+                                    key = {movie.id}
+                                    id = {movie.id}
+                                    year = {movie.year}
+                                    title = {movie.title}
+                                    summary = {movie.summary}
+                                    poster = {movie.medium_cover_image}
+                                />
+                            )
+                        })
+                    }</div>) 
+                }
+            </section>
         )
     }
 }
