@@ -28,7 +28,7 @@
     생명 주기 함수
 </details>
 
-6주차 [21.10.06 - 영화 앱 만들기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-06%EC%9D%BC-)
+6주차 [21.10.06 - 영화 앱 만들기(1)](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-06%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
     
@@ -36,8 +36,209 @@
     영화 API 호출하기
     async, await
 </details>
+
+7주차 [21.10.14 - 영화 앱 만들기(2), 영화 앱 다듬기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-14%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    Movie 컴포넌트 추가, 출력
+    컴포넌트에 html추가
+</details>
 <br><br>
 
+## [ 10월 14일 ]
+* Movie 컴포넌트 만들기
+
+`Movie.js`
+
+```jsx
+import Proptypes from 'prop-types'
+
+function Movie(id, title, year, summery, poster) {      // state가 필요하지 않으므로 함수형 컴포넌트로 작성
+    return (
+        <h1>{title}</h1>        // 전달받은 아규먼트값 출력
+    )
+}
+
+Movie.proptypes = {             // API에 필요한데이터만 골라서 proptypes에 작성
+    id: Proptypes.number.isRequired,
+    year: Proptypes.string.isRequired,
+    title: Proptypes.string.isRequired,
+    summery: Proptypes.string.isRequired,
+    poster: Proptypes.string.isRequired     // 영화포스터의 이미지주소를 저장하기 위함
+}
+
+export default Movie
+```
+<br>
+
+* 영화 API 정렬기능 사용하기
+
+`App.js`
+```jsx
+getMoives = async () => {
+        const {
+            data: {
+                data: {movies}
+            }
+        } = await axios.get('https://yts-proxy.now.sh/list_movies.json?sort_by=rating')         // sort_by라는 파라미터를 사용하여 평점을 기준으로 내림차순 출력
+        console.log(movies)
+        this.setState({movies, isLoading: false})
+    }
+```
+
+![1](https://postfiles.pstatic.net/MjAyMTEwMTZfMTQg/MDAxNjM0MzM0NTg0OTE3.Yf0jUwny0BGd2oaU1GYtOizKv474v7C_xVbblMVQR8Ug.xn7zx8Wqa6cAZRDQEdySzSvmx5m7g_-E-LVOcL2SuyMg.PNG.charade6/456.png?type=w773)
+
+<br>
+
+* App컴포넌트에서 Movie컴포넌트 그리기
+
+`App.js`
+```jsx
+ render(){
+        const { isLoading, movies } = this.state
+        return(
+            <div>
+                { isLoading 
+                ? <img src="img/loading.gif" width="100px" height="100px" alt="loading"/> 
+                : movies.map((movie) => {
+                    return (
+                        <Movie 
+                            id = {movie.id}
+                            year = {movie.year}
+                            title = {movie.title}
+                            summery = {movie.summery}
+                            poster = {movie.poster}
+                        />
+                    )
+                }) }
+            </div>
+        )
+    }
+```
+![2](https://postfiles.pstatic.net/MjAyMTEwMTZfMTQ0/MDAxNjM0MzM0NTk0NjI4.Ug_emdbVSSfccjmihRSIjnlNC6t2ZzdYQ1Uq_MheexQg.99uDqHnk4-Y0WxViU1UZ055iHtPj0PYpXZQNOemcapIg.PNG.charade6/789789.PNG?type=w773)
+
+> 😥 **오류발생**💧<br>
+❓ 1. key props가 없기때문에 실행결과는 나오지만 keyprops 경고가뜸<br>
+❓ 2. poster props의 경우 키 이름이 medium_cover_image이므로 오류가뜸<br>
+🛠 key props추가, poster props 키 이름변경
+
+<br>
+
+`App.js`
+```jsx
+<Movie 
+    key = {movie.id}        // key값 추가
+    id = {movie.id}
+    year = {movie.year}
+    title = {movie.title}
+    summary = {movie.summary}
+    poster = {movie.medium_cover_image}     // 키 이름 변경
+/>
+```
+<br>
+
+* App컴포넌트와 Movie컴포넌트에 HTML추가하기
+
+`App.js`
+```jsx
+render(){
+    const { isLoading, movies } = this.state
+    return(
+        <section class="container">
+            { isLoading 
+            ? (<div class="loader"><img src="img/loading.gif" alt="loading"/></div>)
+            : (<div class="movies">
+                {
+                    /*    생략    */
+                }</div>) 
+            }
+        </section>
+    )
+}
+```
+`Movie.js`
+```jsx
+function Movie({title, year, summary, poster}) {
+    return (
+        <div class="movie-data">
+            <img src={poster} alt={title} title={title} />
+            <h3 class="movie-title">{title}</h3>
+            <h5 class="movie-year">{year}</h5>
+            <p class="movie-summary">{summary}</p>
+        </div>
+    )
+}
+```
+![3](https://postfiles.pstatic.net/MjAyMTEwMTZfMTMw/MDAxNjM0MzM1MjUzNDQ5.MdOqiuucvhVZRU06FMl_gaIChE3qjWAwyYNTe4gzcnEg.0DKVoiygA1WxD8he1CIge7PB5fn45R6CFMYjpjsJer0g.PNG.charade6/123123123132.PNG?type=w773)
+
+<br>
+
+### 영화 앱 다듬기
+* 장르 추가하기
+`App.js`
+```jsx
+movies.map((movie) => {
+                            return (
+                                <Movie 
+                                    genres = {movie.genres}     // genres props를 Movie컴포넌트로 전달
+                                />
+                            )
+                        })
+```
+`Movie.js`
+```jsx
+function Movie({title, year, summary, poster, genres}) {    // genres 추가
+
+Movie.propTypes = {
+    genres: Proptypes.arrayOf(Proptypes.string).isRequired      // genres에 여러값이 들어올수 있으므로 arrayOf로 작성
+}
+```
+
+* class 속성이름 className으로 바꿔주기
+
+![4](https://postfiles.pstatic.net/MjAyMTEwMTZfNzcg/MDAxNjM0MzM1MzM2MDIx.W-I9z9f8EkWhPVdcYkvgKJzQLXgCkIcQUZnDC1MLhsAg.fKBjbuOxsc9rp4Z2aZDRtuEWxy3HKg_sQ7s3RopBcDMg.PNG.charade6/fd123as1f23a.PNG?type=w773)
+
+<br>
+
+> 😥 **오류발생**💧<br>
+❓ JSX는 HTML보다는 JavaScript에 가깝기 때문에, React DOM은 HTML 어트리뷰트 이름대신<br>
+**camelCase** 프로퍼티 명명 규칙을 사용함<br>
+🛠 class속성이름을 모두 className으로 바꾸자
+
+`App.js`
+```jsx
+render(){
+    const { isLoading, movies } = this.state
+    return(
+        <section className="container">
+            { isLoading 
+            ? (<div className="loader"><img src="img/loading.gif" alt="loading"/></div>)
+            : (<div className="movies">
+                {
+                    /*    생략    */
+                }</div>) 
+            }
+        </section>
+    )
+}
+```
+`Movie.js`
+```jsx
+function Movie({title, year, summary, poster}) {
+    return (
+        <div className="movie-data">
+            <img src={poster} alt={title} title={title} />
+            <h3 className="movie-title">{title}</h3>
+            <h5 className="movie-year">{year}</h5>
+            <p className="movie-summary">{summary}</p>
+        </div>
+    )
+}
+```
+<br>
+
+***
 ## [ 10월 06일 ]
 ### 영화 앱 만들기
 * 영화 데이터 로딩상태 표시하기
@@ -134,6 +335,7 @@ getMoives = async () => {
 
 * 구조분해할당을 이용하여 영화 데이터 저장하기
 
+`App.js`
 ```jsx
 getMoives = async () => {
         const {
@@ -190,7 +392,7 @@ Food.propTypes = {
 
 >정적인 데이터 - props 사용<br>
 동적인 데이터 - state 사용<br>
-***state는 함수형 컴퍼넌트가 아닌 class형 컴포넌트에서 사용***
+***state는 함수형 컴퍼포트가 아닌 class형 컴포넌트에서 사용***
 
 * class형 컴포넌트 작성
 
@@ -583,7 +785,7 @@ export default App
 ```
 
 >코드가 길어지면 메인만 보고 함수가 어떤 역할을 하는지 몰라 함수를 거쳐가야 하므로 가독성↓<br>
->함수보다는 ***컴퍼넌트로 만들어사용하는것이 일반적***
+>함수보다는 ***컴포넌트로 만들어사용하는것이 일반적***
 
 <br>
 
