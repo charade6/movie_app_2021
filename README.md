@@ -37,15 +37,154 @@
     async, await
 </details>
 
-7주차 [21.10.14 - 영화 앱 만들기(2), 영화 앱 다듬기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-14%EC%9D%BC-)
+7주차 [21.10.14 - 영화 앱 만들기(2), 영화 앱 다듬기(1)](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-14%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
     
     Movie 컴포넌트 추가, 출력
     컴포넌트에 html추가
 </details>
+
+9주차 [21.10.27 - 영화 앱 다듬기(2), 영화 앱에 기능 추가하기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-27%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    라우터
+</details>
 <br><br>
 
+## [ 10월 27일 ]
+* 영화 장르 추가하기
+
+`Movie.js`
+
+```jsx
+function Movie({title, year, summary, poster, genres}) {
+    return (
+        <div className="movie-data">
+            <img src={poster} alt={title} title={title} />
+            <h3 className="movie-title">{title}</h3>
+            <h5 className="movie-year">{year}</h5>
+
+            <ul className="movie-genres">       
+                {genres.map((genre) => {                            // genres props는 배열이므로 map()함수를 이용함
+                    return <li className="movie-genre">{genre}</li>
+                })}
+            </ul>
+
+            <p className="movie-summary">{summary}</p>
+        </div>
+    )
+}
+```
+
+![1](https://postfiles.pstatic.net/MjAyMTEwMzBfMzQg/MDAxNjM1NTUyNjk0NzY3.mSRPFrP7KcbT9VUw2gUf4kznpbRjvqwtblbxb6jUbbMg.4d9gCq-nVTGCROAZQ_nlpFZOy_1K55SqUnl65AseQUkg.PNG.charade6/1.PNG?type=w773)
+
+> 😥 **오류발생**💧<br>
+❓ 1. key props가 없기때문에 실행결과는 나오지만 keyprops 경고가뜸<br>
+🛠 key props를 추가함
+
+<br>
+
+`Movie.js`
+```jsx
+function Movie({title, year, summary, poster, genres}) {
+    return (
+        <div className="movie-data">
+            <img src={poster} alt={title} title={title} />
+            <h3 className="movie-title">{title}</h3>
+            <h5 className="movie-year">{year}</h5>
+
+            <ul className="movie-genres">       
+                {genres.map((genre, index) => {                 // 배열의 index를 key값으로 사용
+                    return <li key={index} className="movie-genre">{genre}</li>
+                })}
+            </ul>
+
+            <p className="movie-summary">{summary}</p>
+        </div>
+    )
+}
+```
+* CSS추가
+
+[CSS](https://github.com/easysIT/do_it_clonecoding_movieapp/blob/master/clone-starter-kit-07/src/Movie.css)
+
+![2](https://postfiles.pstatic.net/MjAyMTEwMzBfNzkg/MDAxNjM1NTUyNjk1MjQ4.3IeMvNycNjCb1HLXZlTjYB9gHFG7HfUdZUr1QcYwFE8g.Vwu2Q5SPzBvKdi92mBpzAuTZWwBeIzivgdlO7RqF54wg.PNG.charade6/2.PNG?type=w773)
+
+* 시놉시스 글자수 제한하기
+
+`Movie.js`
+```jsx
+function Movie({title, year, summary, poster, genres}) {
+    return (
+        <div className="movie-data">
+            // 중략
+
+            <p className="movie-summary">{summary.slice(0,180)}...</p> // 자바스크립트의 slice() 함수를 이용하여 제한
+        </div>
+    )
+}
+```
+![3](https://postfiles.pstatic.net/MjAyMTEwMzBfMjQg/MDAxNjM1NTUyNjk1MjI1.zVMb7V8PBHt8d7N07ZWjfYhhgAuLupCJOZ55-vwZ0FYg.BAC1szVxeOV0ryLMojIWJ1TMqZfpz5b7TMKgoKSv5DUg.PNG.charade6/3.PNG?type=w773)
+
+<br>
+
+* 라우터 - 사용자가 입력한 URL을 통해 특정 컴포넌트를 호출함
+
+1. 외부모듈이므로 `npm install react-router-dom` 으로 설치
+2. Home.js 생성하여 App.js 내용복제
+3. App.js에 HashRouter와 Router 임포트하고 라우터 컴포넌트가 반환되도록 수정
+
+`App.js`
+```jsx
+import { HashRouter, Route } from 'react-router-dom'
+
+function App(){
+    return(
+        <HashRouter>
+            <Route />
+        </HashRouter>
+    )
+}
+```
+
+4. path, component prop 추가
+
+`App.js`
+```jsx
+function App(){
+    return(
+        <HashRouter>
+            <Route path="/" component={Home} />         // http://localhost:3000/#/ 일때 Movie컴포넌트가 보여지게
+            <Route path="/about" component={About} />   // http://localhost:3000/#/about 일때 About 컴포넌트가 보여지게
+        </HashRouter>
+    )
+}
+```
+![4](https://postfiles.pstatic.net/MjAyMTEwMzBfMTE0/MDAxNjM1NTUyNjk0ODkw.WMnTRpT0kXnXgZ6VVY9vYMXlvx5ypAgitpH38V30ySMg.39JDoilmCQOlTy-AVsTfTgm41-4Pcfg56KAMVm3snnAg.PNG.charade6/4.PNG?type=w773)
+
+> 🤔 About 컴포넌트만이 아닌 Movie 컴포넌트가 함께 출력됨
+
+5. exact props 추가하기
+
+exact props는 Route 컴포넌트가 path props와 정확하게 일치하는 URL에만 반응하도록 함
+
+`App.js`
+```jsx
+function App(){
+    return(
+        <HashRouter>
+            <Route path="/" exact={true} component={Home} />
+            <Route path="/about" component={About} />
+        </HashRouter>
+    )
+}
+```
+![5](https://postfiles.pstatic.net/MjAyMTEwMzBfMjYz/MDAxNjM1NTUyNjk0NjMx.RvAtamTksufczsvcW0RBLwm-LNaln-3YeNWBvu19hm0g.eVPhwVHrRPJ_gX0ofVtJLqGCIdC0ohOR3czEXiR4dhUg.PNG.charade6/5.PNG?type=w773)
+
+
+***
 ## [ 10월 14일 ]
 * Movie 컴포넌트 만들기
 
@@ -392,7 +531,7 @@ Food.propTypes = {
 
 >정적인 데이터 - props 사용<br>
 동적인 데이터 - state 사용<br>
-***state는 함수형 컴퍼포트가 아닌 class형 컴포넌트에서 사용***
+***state는 함수형 컴포넌트가 아닌 class형 컴포넌트에서 사용***
 
 * class형 컴포넌트 작성
 
