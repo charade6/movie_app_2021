@@ -15,6 +15,10 @@
     align-items: center;
     font-weight: 300;
   }
+  .loader img{
+    width: 100px;
+    height: 100px;
+  }
   .movies {
     display: grid;
     grid-template-columns: repeat(2, minmax(400px, 1fr));
