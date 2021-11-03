@@ -4,7 +4,7 @@
 .movies {
     margin-top: 70px;
 }
-.movies .movie-data {
+.movies .movie {
     background-color: white;
     margin-bottom: 70px;
     font-weight: 300;
@@ -15,7 +15,7 @@
       0 -6px 16px -6px rgba(0, 0, 0, 0.025);
   }
   
-  .movies .movie-data a {
+  .movies .movie a {
     display: grid;
     grid-template-columns: minmax(150px, 1fr) 2fr;
     grid-gap: 20px;
@@ -23,7 +23,7 @@
     color: inherit;
   }
   
-  .movie-data img {
+  .movie img {
     position: relative;
     top: -50px;
     max-width: 150px;
