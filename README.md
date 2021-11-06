@@ -45,13 +45,184 @@
     컴포넌트에 html추가
 </details>
 
-9주차 [21.10.27 - 영화 앱 다듬기(2), 영화 앱에 기능 추가하기](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-27%EC%9D%BC-)
+9주차 [21.10.27 - 영화 앱 다듬기(2), 영화 앱에 기능 추가하기(1)](https://github.com/charade6/movie_app_2021#-10%EC%9B%94-27%EC%9D%BC-)
 <details><summary></summary>
     <div markdown="1">
     
     라우터
 </details>
+
+10주차 [21.11.03 - 영화 앱에 여러 기능 추가하기(2)](https://github.com/charade6/movie_app_2021#-11%EC%9B%94-03%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    네비게이션추가
+    상세정보 기능
+    리다이렉트 기능
+</details>
 <br><br>
+
+## [ 11월 05일 ]
+* 네비게이션 만들기
+
+`Navigation.js`
+
+```jsx
+function Navigation(){
+    return(
+        <div>
+            <a href="/">Home</a>
+            <a href="/#/about">About</a>
+        </div>
+    )
+}
+export default Navigation
+```
+`App.js`
+
+```jsx
+import './App.css'
+import { HashRouter, Route } from 'react-router-dom'
+import About from './routes/About'
+import Home from './routes/Home'
+import Navigation from './components/Navigation'
+
+function App(){
+    return(
+        <HashRouter>
+            <Navigation />          // 컴포넌트 추가
+            <Route path='/' exact={true} component={Home} />
+            <Route path='/about' component={About} />
+        </HashRouter>
+    )
+}
+export default App
+```
+
+> 🤔 링크를 클릭할 때마다 리액트가 죽고, 새 페이지가 열리는 문제가 발생한다.<br>
+❓ a 태그의 href속성이 페이지 전체를 다시 그리는 성질을 가지고 있음
+
+<br>
+
+* a 태그 Link 컴포넌트로 바꾸기
+
+`Navigation.js`
+```jsx
+import { Link } from 'react-router-dom'
+
+function Navigation(){
+    return(
+        <div>
+            <Link to="/">Home</Link>
+            <Link to="/#/about">About</Link>
+        </div>
+    )
+}
+export default Navigation
+```
+![1]()<br>
+![2]()
+
+
+* 영화 상세정보 기능 만들기
+
+`Detail.js`
+```jsx
+function Detail(props){     // Movie컴포넌트의 Link컴포넌트가 보내준 영화데이터를 받음
+    return(
+        <span>hello</span>
+    )
+}
+export default Detail
+```
+
+`Movie.js`
+```jsx
+import { Link } from 'react-router-dom'
+
+function Movie({title, year, summary, poster, genres}) {
+    return (
+        <div className='movie'>
+            <Link to=                   
+                {{
+                    pathname: '/detail',        // 영화 카드를 누르면 /detail로 이동함
+                    state: {title, year, summary, poster, genres}       // props를 보내줌
+                }}
+            />
+            </Link>
+        </div>
+    )
+}
+```
+`App.js`
+```jsx
+import Detail from './routes/Detail'
+
+function App(){
+    return(
+        <HashRouter>
+            <Navigation />
+            <Route path='/' exact={true} component={Home} />
+            <Route path='/about' component={About} />
+            <Route path='/detail' component={Detail} />     // Detail 컴포넌트 추가
+        </HashRouter>
+    )
+}
+```
+영화카드클릭시<br>
+![3]()<br>
+URL에 /detail 입력하여 이동시</br>
+![4]()
+
+> 🤔 영화를 선택하지 않았는데도 /detail이 접속됨
+
+<br>
+
+* 리다이렉트 기능 만들기
+
+route props의 history키를 활용
+
+`Detail.js`
+```jsx
+import { Component } from "react"
+
+class Detail extends Component {
+    componentDidMount(){        // Detail컴포넌트가 마운트될 때
+        const {location, history} = this.props
+        if(location.state === undefined){        // location.state가 undefined일 경우 
+            history.push("/")           // push()함수 실행
+        }
+    }
+    render (){
+        return (
+            <span>{location.state.title}</span>     // 타이틀 출력
+        )
+    }
+}
+
+export default Detail
+```
+![5]()
+> 😥 **오류발생**💧<br>
+❓ Detail컴포넌트는 render() → componentDidMount()순서로 실행하기 때문이다 <br>
+render()함수 내에서 location.state.title을 사용하려는데 location.state가 undefined이므로 오류가 발생함<br>
+🛠 render()함수에도 componentDidMount()에 작성한 리다이렉트 코드를 추가함
+
+`Detail.js`
+```jsx
+render (){
+    const {location} = this.props
+    if(location.state){
+        return(
+            <span>{location.state.title}</span>                
+        )
+    } else {
+        return null
+    }
+}
+```
+
+<br>
 
 ## [ 10월 27일 ]
 * 영화 장르 추가하기
@@ -81,7 +252,7 @@ function Movie({title, year, summary, poster, genres}) {
 ![1](https://postfiles.pstatic.net/MjAyMTEwMzBfMzQg/MDAxNjM1NTUyNjk0NzY3.mSRPFrP7KcbT9VUw2gUf4kznpbRjvqwtblbxb6jUbbMg.4d9gCq-nVTGCROAZQ_nlpFZOy_1K55SqUnl65AseQUkg.PNG.charade6/1.PNG?type=w773)
 
 > 😥 **오류발생**💧<br>
-❓ 1. key props가 없기때문에 실행결과는 나오지만 keyprops 경고가뜸<br>
+❓ key props가 없기때문에 실행결과는 나오지만 keyprops 경고가뜸<br>
 🛠 key props를 추가함
 
 <br>
@@ -444,7 +615,6 @@ import axios from "axios"   // axios를 임포트함
         this.getMoives()
     }
 
-~후략
 ```
 ![2](https://postfiles.pstatic.net/MjAyMTEwMDlfNzQg/MDAxNjMzNzgwODQwMjky.TjMj715YXLSquFhSgBaCbrg3ENqdUVCxGir7xCT_rlEg.B-0dBrH6RPde8hbFhy7Ne9FdzPPo0sAeCJyg6Mh51J4g.PNG.charade6/2.PNG?type=w773)
 <br>
@@ -854,7 +1024,6 @@ const foodILike = [
 
 * map() 함수로 Food컴포넌트 여러개 만들기
 ```jsx
-const foodILike = [{생략}]
 function Food({name}) {
     return (
         <h1>I like {name}</h1>
@@ -878,7 +1047,6 @@ export default App
 
 * Food 컴포넌트에 이미지 출력하기
 ```jsx
-const foodILike = [{생략}]
 function Food({name, picture}) {
     return (
         <div>                                   // div로 묶어줌
