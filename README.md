@@ -120,8 +120,8 @@ function Navigation(){
 }
 export default Navigation
 ```
-![1]()<br>
-![2]()
+![1](https://postfiles.pstatic.net/MjAyMTExMDZfMjA2/MDAxNjM2MTc0MDA3MjE4.1iHUCchovad_U1BAR9XyYZszXGbrGMdJ0yuslL2Nza4g.tEvpLiYlmJhP-frUxlGvT7R_5wMiz5DkGo5CFdjB44Ig.PNG.charade6/1.PNG?type=w773)<br>
+![2](https://postfiles.pstatic.net/MjAyMTExMDZfMTMy/MDAxNjM2MTc0MDA2Njgw.L-t90-fdljY2NsPymY0hqpLw8bnI-DSTYqR5qJs87Zcg.k2-RkzrZrgDyrIO0DAfT07qytQizFBt83kG_UKv1uewg.PNG.charade6/2.PNG?type=w773)
 
 
 * 영화 상세정보 기능 만들기
@@ -170,9 +170,9 @@ function App(){
 }
 ```
 영화카드클릭시<br>
-![3]()<br>
+![3](https://postfiles.pstatic.net/MjAyMTExMDZfMzMg/MDAxNjM2MTc0MDA3Mjky.kXX_4To_JVpUQhxvzqBQrf5vX4Xg4fWE03JUOgfsvXYg.sEom02C848zOBDKzWqEw9oOAd4pSUQwOWB9bnYEBC9og.PNG.charade6/3.PNG?type=w773)<br>
 URL에 /detail 입력하여 이동시</br>
-![4]()
+![4](https://postfiles.pstatic.net/MjAyMTExMDZfMjk3/MDAxNjM2MTc0MDA3MDk2.MvYpP19BGMAd82_TUndFvUG4GP6qLOeZFN1qG8J8mPcg.rrJCpRyvZbmTlSxNnG4fFezmQC3M2R681aHSu6Xc938g.PNG.charade6/4.PNG?type=w773)
 
 > 🤔 영화를 선택하지 않았는데도 /detail이 접속됨
 
@@ -202,7 +202,7 @@ class Detail extends Component {
 
 export default Detail
 ```
-![5]()
+![5](https://postfiles.pstatic.net/MjAyMTExMDZfMTM1/MDAxNjM2MTc0MDA3NDQw.NZCqRrE_qfGIp8iR9_GFcUtMtLMqS0o1u90eniy_GJMg.2RNIpbW5bbGsX34Ao72ng6VNPaeNdpTWVMqz0IOGEn4g.PNG.charade6/%EC%BA%A1%EC%B2%98.PNG?type=w773)
 > 😥 **오류발생**💧<br>
 ❓ Detail컴포넌트는 render() → componentDidMount()순서로 실행하기 때문이다 <br>
 render()함수 내에서 location.state.title을 사용하려는데 location.state가 undefined이므로 오류가 발생함<br>
