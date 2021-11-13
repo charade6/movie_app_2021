@@ -56,11 +56,44 @@
 <details><summary></summary>
     <div markdown="1">
     
-    네비게이션추가
+    네비게이션 추가
     상세정보 기능
     리다이렉트 기능
 </details>
+
+11주차 [21.11.10 - 영화 앱 깃허브에 배포하기](https://github.com/charade6/movie_app_2021#-11%EC%9B%94-10%EC%9D%BC-)
+<details><summary></summary>
+    <div markdown="1">
+    
+    배포
+</details>
 <br><br>
+
+## [ 11월 10일 ]
+* 영화 앱 배포하기
+1. package.json 수정
+
+`package.json`
+```jsx
+"scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",       // 추가
+    "deploy": "gh-pages -d build"       // 추가
+},
+
+// 생략
+
+"homepage": "https://charade6.github.io/movie_app_2021" // 추가
+```
+2. 터미널에 `npm install gh-pages` 입력하여 설치
+
+3. `npm run deploy` 입력하여 배포
+
+***
+영화 앱 클론코딩 끝
+
+***
 
 ## [ 11월 03일 ]
 * 네비게이션 만들기
