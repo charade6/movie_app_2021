@@ -88,7 +88,145 @@
     Todo list 예제
     markdown 에디터 예제
 </details>
+
+13주차 [21.11.24 - 리액트 공식문서](https://github.com/charade6/movie_app_2021#-11%EC%9B%94-24%EC%9D%BC-)
+
+<details><summary></summary>
+    <div markdown="1">
+    
+    
+</details>
 <br><br>
+
+## [ 11월 24일 ]
+
+### 리액트 공식문서
+
+- JSX - **J**ava**S**cript e**X**tension JavaScript의 확장 버전이고 HTML 문법을 JavaScript 코드 내부에 쓴 것
+
+```jsx
+const element = <h1>Hello, world!</h1>
+
+ReactDOM.render(element, document.getElementById("root"))
+```
+
+> JSX의 중괄호 안에는 유효한 모든 JavaScript 표현식을 넣을 수 있음
+
+```jsx
+function formatName(user) {
+  return user.firstName + " " + user.lastName
+}
+
+const user = {
+  firstName: "Harper",
+  lastName: "Perez",
+}
+
+const element = <h1>Hello, {formatName(user)}!</h1>
+
+ReactDOM.render(element, document.getElementById("root"))
+```
+
+> 싱글태그사용시 무조건 /를 넣어야함
+
+```jsx
+const element = <img src={user.avatarUrl} />
+```
+
+- 컴포넌트
+  > 컴포넌트의 이름은 항상 대문자로 시작함
+
+```jsx
+// 함수형 - props 사용할때
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>
+}
+```
+
+```jsx
+// 클래스형 - state 사용할때
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>
+  }
+}
+```
+
+> 컴포넌트 합성
+
+컴포넌트는 자신의 출력에 다른 컴포넌트를 참조할 수 있음
+
+```jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>
+}
+
+function App() {
+  return (
+    <div>
+      <Welcome name="Sara" />
+      <Welcome name="Cahal" />
+      <Welcome name="Edite" />
+    </div>
+  )
+}
+```
+
+> 컴포넌트 추출
+
+```jsx
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <div className="UserInfo">
+        <img
+          className="Avatar"
+          src={props.author.avatarUrl}
+          alt={props.author.name}
+        />
+        <div className="UserInfo-name">{props.author.name}</div>
+      </div>
+      <div className="Comment-text">{props.text}</div>
+      <div className="Comment-date">{formatDate(props.date)}</div>
+    </div>
+  )
+}
+```
+
+컴포넌트를 분할하여 가독성을 높이고 재활용성 높임
+
+```jsx
+function Comment(props) {
+  return (
+    <div className="Comment">
+    //</>
+      <UserInfo user={props.author} />
+      // -- UserInfo 컴포넌트 --
+      // <div className="UserInfo">
+
+      //   <Avatar user={props.user} />
+      ////   -- Avatar 컴포넌트 --
+      ////   <img className="Avatar" src={props.user.avatarUrl} alt={props.user.name} />
+      ////   -- Avatar 컴포넌트 끝 --
+
+      //   <div className="UserInfo-name">
+      //     {props.user.name}
+      //   </div>
+      // </div>
+      // -- UserInfo 컴포넌트 끝 --
+
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {formatDate(props.date)}
+      </div>
+    </div>
+  );
+}
+```
+
+---
 
 ## [ 11월 17일 ]
 
