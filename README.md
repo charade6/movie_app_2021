@@ -89,14 +89,404 @@
     markdown 에디터 예제
 </details>
 
-13주차 [21.11.24 - 리액트 공식문서](https://github.com/charade6/movie_app_2021#-11%EC%9B%94-24%EC%9D%BC-)
+13주차 [21.11.24 - 리액트 공식문서(1)](https://github.com/charade6/movie_app_2021#-11%EC%9B%94-24%EC%9D%BC-)
 
 <details><summary></summary>
     <div markdown="1">
     
+    JSX
+    컴포넌트
+</details>
+
+14주차 [21.12.01 - 리액트 공식문서(2)](https://github.com/charade6/movie_app_2021#-12%EC%9B%94-01%EC%9D%BC-)
+
+<details><summary></summary>
+    <div markdown="1">
     
+    state
+    생명주기
+    이벤트 처리
+    조건부 랜더링
 </details>
 <br><br>
+
+## [ 12월 01일 ]
+
+### 리액트 공식문서
+
+#### State and Lifecycle
+
+- 함수 컴포넌트를 클래스 컴포넌트로 변환하기
+
+```jsx
+function Clock(props) {
+  return (
+    <div>
+      <h1>Hello world!</h1>
+      <h2>It is {props.date.toLocaleTimeString()}.</h2>
+    </div>
+  )
+}
+function tick() {
+  ReactDOM.render(
+    <Clock date={new Date()} />
+    document.getElementById('root')
+  )
+}
+setInterval(tick, 1000)
+///////
+class Clock extends React.Component {
+  // React.Component를 상속하는 클래스 생성
+  render() {
+    // render로 return을 감싸기
+    return (
+      <div>
+        <h1>Hello world!</h1>
+        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+        <!--props앞 this추가-->
+      </div>
+    )
+  }
+}
+```
+
+- 클래스에 로컬 State 추가하기
+
+```jsx
+class Clock extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {date: new Date()}
+  } // 초기 state를 정하는 생성자 추가
+
+  render() {
+    return (
+      <div>
+        <h1>Hello world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+        <!--props를 state로 변경-->
+      </div>
+    )
+  }
+}
+ReactDOM.render(
+  <Clock />,
+  // date={new Date()}삭제
+  document.getElementById('root')
+)
+```
+
+- 생명주기 메서드를 클래스에 추가하기
+
+  - 생명주기 메서드
+
+![생명주기함수](https://blog.kakaocdn.net/dn/cdh3Mf/btqDk6pKMMV/O5rGQb2CLmSRPfEqtYn1d0/img.png)
+
+```jsx
+class Clock extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { date: new Date() }
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(() => this.tick(), 1000) // tick()을 1초마다 불러옴
+  } // render이후 실행
+
+  componentWillUnmount() {
+    clearInterval(this.timerID)
+  } // 컴포넌트가 소멸된시점(DOM에서 삭제된 후) 실행
+
+  tick() {
+    this.setState({
+      date: new Date(),
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    )
+  }
+}
+ReactDOM.render(<Clock />, document.getElementById("root"))
+```
+
+1. `<Clock />`가 ReactDOM.render()로 전달되었을 때 React는 Clock 컴포넌트의 constructor를 호출합니다. Clock이 현재 시각을 표시해야 하기 때문에 현재 시각이 포함된 객체로 this.state를 초기화합니다. 나중에 이 state를 업데이트할 것입니다.
+2. React는 Clock 컴포넌트의 render() 메서드를 호출합니다. 이를 통해 React는 화면에 표시되어야 할 내용을 알게 됩니다. 그 다음 React는 Clock의 렌더링 출력값을 일치시키기 위해 DOM을 업데이트합니다.
+3. Clock 출력값이 DOM에 삽입되면, React는 componentDidMount() 생명주기 메서드를 호출합니다. 그 안에서 Clock 컴포넌트는 매초 컴포넌트의 tick() 메서드를 호출하기 위한 타이머를 설정하도록 브라우저에 요청합니다.
+4. 매초 브라우저가 tick() 메서드를 호출합니다. 그 안에서 Clock 컴포넌트는 setState()에 현재 시각을 포함하는 객체를 호출하면서 UI 업데이트를 진행합니다. setState() 호출 덕분에 React는 state가 변경된 것을 인지하고 화면에 표시될 내용을 알아내기 위해 render() 메서드를 다시 호출합니다. 이 때 render() 메서드 안의 this.state.date가 달라지고 렌더링 출력값은 업데이트된 시각을 포함합니다. React는 이에 따라 DOM을 업데이트합니다.
+5. Clock 컴포넌트가 DOM으로부터 한 번이라도 삭제된 적이 있다면 React는 타이머를 멈추기 위해 componentWillUnmount() 생명주기 메서드를 호출합니다.
+
+<br>
+
+#### State를 올바르게 사용하기
+
+- 직접 State 수정하지 않기
+  > this.state를 지정할 수 있는 유일한 공간은 생성자
+
+```jsx
+this.state.comment = "hello" //x
+
+this.setState({ comment: "hello" }) //o
+```
+
+- State 업데이트는 비동기적일 수 있음
+  > react는 성능을 위해 여러 setState() 호출을 단일 업데이트로 한꺼번에 처리할 수도 있음<br>
+  > this.props와 this.state가 비동기적으로 업데이트될 수 있음
+
+```jsx
+this.setState({
+  counter: this.state.counter + this.props.increment,
+})
+
+this.setState((state, props) => ({
+  counter: state.counter + props.increment,
+}))
+// or
+this.setState(function (state, props) {
+  return {
+    counter: state.counter + props.increment,
+  }
+})
+```
+
+- State 업데이트는 병합됨
+  > setState()를 호출할 때 React는 제공한 객체를 현재 state로 병합됨
+
+```jsx
+ constructor(props) {
+    super(props);
+    this.state = {
+      posts: [],
+      comments: []
+    };
+  }
+
+// 별도의 setState() 호출로 이러한 변수를 독립적으로 업데이트할 수 있음
+  componentDidMount() {
+    fetchPosts().then(response => {
+      this.setState({
+        posts: response.posts
+      });
+    });
+
+    fetchComments().then(response => {
+      this.setState({
+        comments: response.comments
+      });
+    });
+  }
+```
+
+#### 이벤트 처리
+
+React 엘리먼트에서 이벤트를 처리하는 방식은 DOM 엘리먼트에서 이벤트를 처리하는 방식과 매우 유사함
+
+> React의 이벤트는 소문자 대신 캐멀 케이스(camelCase)를 사용<br>
+> JSX를 사용하여 문자열이 아닌 함수로 이벤트 핸들러를 전달
+
+-React에서는 false를 반환해도 기본 동작을 방지할 수 없습니다. 반드시 preventDefault를 명시적으로 호출해야함
+
+```jsx
+function Form() {
+  function handleSubmit(e) {
+    e.preventDefault()
+    console.log("You clicked submit.")
+  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+```
+
+- 바인딩
+
+onClick={this.handleClick}과 같이 뒤에 ()를 사용하지 않고 메서드를 참조할 경우, 해당 메서드를 바인딩 해야 함
+
+1. 클래스 필드를 사용하여 콜백을 올바르게 바인딩하는 방법
+
+```jsx
+  // 이 문법은 `this`가 handleClick 내에서 바인딩되도록 합니다.
+  // 주의: 이 문법은 *실험적인* 문법입니다.
+  handleClick = () => {
+    console.log('this is:', this);
+  }
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        Click me
+      </button>
+    );
+  }
+```
+
+2. 클래스 필드 문법을 사용하지 있지 않고 콜백에 화살표 함수를 사용하는 방법
+
+```jsx
+  handleClick() {
+    console.log('this is:', this);
+  }
+
+  render() {
+    // 이 문법은 `this`가 handleClick 내에서 바인딩되도록 합니다.
+    return (
+      <button onClick={() => this.handleClick()}>
+        Click me
+      </button>
+    );
+  }
+```
+
+- 이벤트 핸들러에 인자 전달
+
+```jsx
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+```
+
+> 위 두 줄은 동등하며 각각 화살표 함수와 Function.prototype.bind를 사용함<br>
+> 두 경우 모두 React 이벤트를 나타내는 e 인자가 ID 뒤에 두 번째 인자로 전달됨
+
+<br>
+
+#### 조건부 랜더링
+
+React에서는 원하는 동작을 캡슐화하는 컴포넌트를 만들 수 있음<br>
+애플리케이션의 상태에 따라서 컴포넌트 중 몇 개만을 렌더링할 수도 있음
+
+```jsx
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>
+}
+```
+
+```jsx
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn
+  if (isLoggedIn) {
+    return <UserGreeting />
+  }
+  return <GuestGreeting />
+}
+
+ReactDOM.render(
+  <Greeting isLoggedIn={false} />,
+  document.getElementById("root")
+)
+// isLoggedIn prop에 따라서 다른 인사말을 렌더링함
+```
+
+- 논리 && 연산자로 If를 인라인으로 표현하기
+
+```jsx
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  return (
+    <div>
+      <h1>Hello!</h1>
+      {unreadMessages.length > 0 &&
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+      <!--unreadMessages의 길이가 0보다 클경우 &&이후 엘리먼트 출력 -->
+      <!--false일경우 무시하고 건너뜀-->
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('root')
+);
+```
+
+> falsy 표현식을 반환하면 여전히 && 뒤에 있는 표현식은 건너뛰지만 falsy 표현식이 반환됨
+
+```jsx
+render() {
+  const count = 0;
+  return (
+    <div>
+      { count && <h1>Messages: {count}</h1>}
+    </div>
+  );
+}
+// <div>0</div>이 render 메서드에서 반환됨
+```
+
+- 조건부 연산자로 If-Else구문 인라인으로 표현하기
+
+```jsx
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>
+      The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
+      <!-- isLoggedIn이 참이면 currently, 거짓이면 not출력-->
+    </div>
+  );
+}
+```
+
+조건이 너무 복잡하다면 컴포넌트를 분리하는것이 가독성에 좋음
+
+- 컴포넌트가 렌더링하는 것을 막기
+
+다른 컴포넌트에 의해 렌더링될 때 컴포넌트 자체를 숨기고 싶을 때<br>
+렌더링 결과를 출력하는 대신 null을 반환하면 해결
+
+```jsx
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null
+  }
+
+  return <div className="warning">Warning!</div>
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { showWarning: true }
+    this.handleToggleClick = this.handleToggleClick.bind(this)
+  }
+
+  handleToggleClick() {
+    this.setState((state) => ({
+      showWarning: !state.showWarning,
+    }))
+  }
+
+  render() {
+    return (
+      <div>
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? "Hide" : "Show"}
+        </button>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<Page />, document.getElementById("root"))
+```
+
+컴포넌트의 render 메서드로부터 null을 반환하는 것은 생명주기 메서드 호출에 영향을 주지 않음
+
+---
 
 ## [ 11월 24일 ]
 
